@@ -33,6 +33,19 @@ public class App {
     /**
      * @param args the command line arguments
      */
+
+
+
+    public static boolean isFourLetter(String input) {
+
+        if (input.matches("[a-z]{4,4}") && input.length() == 4) {
+            return true;
+
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
         SQLiteConnectionManager wordleDatabaseConnection = new SQLiteConnectionManager("words.db");
 
@@ -56,9 +69,18 @@ public class App {
             String line;
             int i = 1;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
-                wordleDatabaseConnection.addValidWord(i, line);
-                i++;
+                
+                if (isFourLetter(line) == true) {
+                    System.out.println(line);
+                    wordleDatabaseConnection.addValidWord(i, line);
+                    i++;
+                }
+                else {
+                    System.out.println("Ignored unacceptable input");
+                    i++;
+    
+                }
+                
             }
 
         } catch (IOException e) {
@@ -73,6 +95,14 @@ public class App {
             System.out.print("Enter a 4 letter word for a guess or q to quit: ");
             String guess = scanner.nextLine();
 
+            if (isFourLetter(guess) == false) {
+                System.out.println("Sorry, that word is NOT four letters");
+            }
+
+            else {
+
+            
+
             while (!guess.equals("q")) {
                 System.out.println("You've guessed '" + guess+"'.");
 
@@ -84,6 +114,8 @@ public class App {
 
                 System.out.print("Enter a 4 letter word for a guess or q to quit: " );
                 guess = scanner.nextLine();
+            }
+
             }
         } catch (NoSuchElementException | IllegalStateException e) {
             e.printStackTrace();
